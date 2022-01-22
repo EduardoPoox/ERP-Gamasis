@@ -1,0 +1,153 @@
+﻿@{
+    Page.Title = "Distribuciones";
+    Layout = "~/Publics/Templates/System/System.cshtml";
+    var distlist = (List<Gamasis.ProjectManagement.Models.Objects.DistributionList>)ViewBag.Distlist;
+    var userlist = (List<Gamasis.ProjectManagement.Models.Objects.Account>)ViewBag.Users;
+    var userlogged = (Gamasis.ProjectManagement.Models.Objects.Account)ViewBag.UserLogged;
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Distribuciones</h1>
+    <button data-target=".bd-example-modal-lg" data-toggle="modal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-plus-circle fa-sm text-white-50"></i>
+        Añadir Nueva Lista
+    </button>
+</div>
+
+<div class="card border-left-primary shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Lista</h6>
+    </div>
+    <div class="card-body">
+
+        @if (distlist.Count > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered" id="distributions" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Proyecto</th>
+                            <th># Usuarios</th>
+                            <th>-</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Gamasis.ProjectManagement.Models.Objects.DistributionList dist in distlist)
+                        {
+                            <tr>
+                                <td>
+                                    @(string.Format("{0}", dist.name))
+                                </td>
+                                <td>
+                                    @(string.Format("{0}", dist.description))
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" onclick="dist.evts.showmembers('@dist.id')">@(string.Format("{0}", dist.members.Count))</a>
+                                </td>
+                                <td>
+                                    <a title="Ver más" href="#" onclick="dist.evts.info('@dist.id');" class="btn btn-sm btn-info btn-circle">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <strong>No hay listas de distribución aún. :(</strong>
+        }
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="mdllist" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Nuevo lista de distribución</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" enctype="multipart/form-data" id="distlist">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input autocomplete="off" required maxlength="50" type="text" class="form-control" id="name" name="name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción de la lista</label>
+                        <textarea required cols="5" maxlength="1000" class="form-control" id="description" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Integrante</label>
+                        <select onchange="dist.evts.add(this)" class="form-control" id="member" name="priority">
+                            <option value="">-Selecciona</option>
+                            @foreach (Gamasis.ProjectManagement.Models.Objects.Account acc in userlist)
+                            {
+                            <option value="@acc.id">@string.Format("{0} {1} - {2}", acc.data.name, acc.data.lastname, acc.data.email)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <div class="table-responsive hide">
+                            <table class="table table-bordered table-hover dataTable" id="imembers">
+                                <thead>
+                                    <tr>
+                                        <th>Integrante</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="mdlmembersinfo" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mdltiimember"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group col-md-12">
+                    <div class="table-responsive hide">
+                        <table class="table table-bordered table-hover dataTable" id="iimembers">
+                            <thead>
+                                <tr>
+                                    <th>Integrante</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Scripts/distribution.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+    <script type="text/javascript" src="@Url.Content("~/Components/SearchBox/searchbox.min.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+}

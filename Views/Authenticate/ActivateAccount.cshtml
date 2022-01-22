@@ -1,0 +1,23 @@
+﻿
+@{
+    Page.Title = "Activa tu cuenta";
+    Layout = "~/Publics/Templates/Login/Login.cshtml";
+    var account = (Gamasis.ProjectManagement.Models.Objects.Account)ViewBag.account;
+}
+
+<form id="activate" method="post" role="form">
+    <div class="login-box-body">
+        <p class="login-box-msg">Tu cuenta ya ha sido creada, pero se encuentra inactiva</p>
+        <strong>Confirma tu correo para poder activar tu cuenta</strong>
+        <hr />
+        <div class="form-group">
+            <label for="mail">Correo</label>
+            <input value="@account.data.email" type="email" class="form-control" name="mail" id="mail" />
+        </div>
+        <input class="btn btn-info" type="submit" value="Confirmar" />
+    </div>
+</form>
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Scripts/active.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+}

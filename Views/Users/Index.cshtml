@@ -1,0 +1,212 @@
+﻿
+@{
+    Page.Title = "Usuarios";
+    Layout = "~/Publics/Templates/System/System.cshtml";
+    var userlist = (List<Gamasis.ProjectManagement.Models.Objects.Account>)ViewBag.Users;
+    var roles = (List<Gamasis.ProjectManagement.Models.Objects.Rol>)ViewBag.Roles;
+
+    var userlogged = (Gamasis.ProjectManagement.Models.Objects.Account)ViewBag.UserLogged;
+}
+@section topbarsearch{
+    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+        <div class="input-group">
+            <input type="text" data-box="box" class="form-control bg-light border-0 small" placeholder="Buscar en la lista..." aria-label="Search"
+                   aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+}
+@section notlist{
+    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+    <li class="nav-item dropdown no-arrow d-sm-none">
+        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-search fa-fw"></i>
+        </a>
+        <!-- Dropdown - Messages -->
+        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+            <div class="form-inline mr-auto w-100 navbar-search">
+                <div class="input-group">
+                    <input type="text" data-box="box" class="form-control bg-light border-0 small" placeholder="Buscar en la lista..."
+                           aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Usuarios</h1>
+    @*<button data-target=".bd-example-modal-lg" data-toggle="modal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-plus-circle fa-sm text-white-50"></i>
+        Añadir Nuevo Usuario
+    </button>*@
+</div>
+<div class="card border-left-primary shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Lista</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="incidents" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Nombre completo</th>
+                        <th>Proyecto</th>
+                        <th>Email</th>
+                        <th>Celular</th>
+                        <th># Asignaciones</th>
+                        <th>-</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (userlist.Count > 0)
+                    {
+                        foreach (Gamasis.ProjectManagement.Models.Objects.Account u in userlist)
+                        {
+                            <tr>
+                                <td>
+                                    @(string.Format("{0} {1}", u.data.name, u.data.lastname))
+                                </td>
+                                <td>
+                                    @(string.Format("{0}", u.data.comesfrom))
+                                </td>
+                                <td>
+                                    @(string.Format("{0}", u.data.email))
+                                </td>
+                                <td>
+                                    @(string.Format("{0}", u.data.cellphone))
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" onclick="us.evts.showassignations('@u.id')">@(string.Format("{0}", u.assignations.Count))</a>
+                                </td>
+                                <td>
+                                    <a title="Ver más" href="#" onclick="us.evts.info('@u.id');" class="btn btn-sm btn-info btn-circle">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td><strong>Sin usuarios registrados</strong></td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@*Modales*@
+<div class="modal fade bd-example-modal-lg" id="mdluser" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Usuario del sistema</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" enctype="multipart/form-data" id="user">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input autocomplete="off" required maxlength="50" type="text" class="form-control" id="name" name="name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Apellidos</label>
+                        <input autocomplete="off" required maxlength="50" type="text" class="form-control" id="lastname" name="lastname" />
+                    </div>
+                    <div class="form-group">
+                        <label>Correo electrónico</label>
+                        <input autocomplete="off" required maxlength="50" type="email" class="form-control" id="mail" name="mail" />
+                    </div>
+                    <div class="form-group">
+                        <label>Número celular</label>
+                        <input autocomplete="off" required maxlength="10" type="text" class="form-control" id="cellphone" name="cellphone" />
+                    </div>
+                    <div class="form-group">
+                        <label>Rol</label>
+                        <select  id="nrol" name="nrol" class="form-control">
+                            <option value="">- Selecciona</option>
+                            @foreach (Gamasis.ProjectManagement.Models.Objects.Rol u in roles)
+                            {
+                                <option value="@u.id">- @u.description</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group is-empty">
+                                <label>Tipo</label>
+                                <select onchange="us.evts.typeChange(this.value)" id="ntype" class="form-control">
+                                    <option value="">- Selecciona</option>
+                                    <option value="1">- Módulo</option>
+                                    <option value="2">- Desarrollador</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group is-empty">
+                                <label for="nasign">Asignación</label>
+                                <select id="nasign" class="form-control">
+                                    <option value="">- Selecciona un tipo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <button type="button" class="btn btn-default btn-sm btn-block" onclick="us.evts.add()">Añadir<div class="ripple-container"></div></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <div class="table-responsive hide">
+                            <table class="table table-bordered table-hover dataTable" id="iassignations">
+                                <thead>
+                                    <tr>
+                                        <th>Asignación</th>
+                                        <th>Tipo</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Scripts/users.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+    <script type="text/javascript" src="@Url.Content("~/Components/SearchBox/searchbox.min.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+    <script>
+        searchbox.init({
+            onChange: function (e) { //OnChange function
+                console.log(e);
+            },
+            beforeSend: function (e) { //A function to do before the searching
+                console.log(e);
+            },
+            maxLength: 2, //set the max length to start a search
+            tableTarget: 'incidents', //The target of the table
+            boxTarget: '[data-box="box"]' //The target of the box
+        });
+    </script>
+}

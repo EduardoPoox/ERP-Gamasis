@@ -1,0 +1,176 @@
+﻿@{
+    Page.Title = "Template";
+
+    Layout = "~/Publics/Templates/System/System.cshtml";
+    var req = (Gamasis.ProjectManagement.Models.Objects.Requirement)ViewBag.Requirement;
+}
+@section Header{
+    <link href="@Url.Content("~/Components/formbuilder/fb.css")" rel="stylesheet" type="text/css">
+}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Nuevo requerimiento</h1>
+</div>
+<div class="container">
+
+
+    <div id="builder" class="row clearfix">
+
+        <div class="col-sm-12 col-md-12">
+            <p class="text-help"><strong>Arrastra los componentes de la derecha hacia la izquierda</strong></p>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <div id="build"><form id="target"><fieldset><div id="legend" class="component" rel="popover" title="Form Title" trigger="manual" data-content="<form class='form'><div class='form-group col-md-12'><label class='control-label'>Title</label> <input class='form-control' type='text' name='title' id='text'><hr/><button class='btn btn-info'>Guardar</button><button class='btn btn-danger'>Cancelar</button></div></form>" data-html="true"><legend class="valtype" data-valtype="text">@req.name</legend></div></fieldset></form></div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="navtab" role="tablist">
+                    <li class="nav-item"><a href="#one" class="nav-link active" data-toggle="tab">Campos de texto</a></li>
+                    <li class="nav-item"><a href="#two" class="nav-link" data-toggle="tab">Desplegables</a></li>
+                    <li class="nav-item"><a href="#three" class="nav-link" data-toggle="tab">Checks</a></li>
+                    <li class="nav-item"><a href="#four" class="nav-link" data-toggle="tab">Botones</a></li>
+                    <li class="nav-item"><a id="sourcetab" class="nav-link" href="#five" data-toggle="tab">Res</a></li>
+                </ul>
+                <form id="components">
+                    <fieldset>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="one">
+                                <div class="form-group component" data-type="text" rel="popover" title="Campo de texto" trigger="manual" data-content="<form class='form'> <div class='form-group col-md-12'> <label class='control-label'>Nombre de campo</label> <input class='form-control' type='text' name='label' id='label'> <hr/> <button class='btn btn-info'>Guardar</button><button class='btn btn-danger'>Cancelar</button> </div> </form>" data-html="true">
+                                    <label class="col-md-12 control-label valtype" for="input01" data-valtype='label'>Nombre de campo</label>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control input-md valtype" data-valtype="placeholder">
+                                    </div>
+                                </div>
+                                <div class="form-group component" rel="popover" title="Área de texto" trigger="manual" data-content="<form class='form'> <div class='form-group col-md-12'> <label class='control-label'>Nombre de campo</label> <input class='form-control' type='text' name='label' id='label'> <hr/> <button class='btn btn-info'>Guardar</button><button class='btn btn-danger'>Cancelar</button> </div> </form>" data-html="true">
+                                    <label class="col-md-12 control-label valtype" data-valtype="label">Área de texto</label>
+                                    <div class="col-md-12">
+                                        <div class="textarea">
+                                            <textarea class="form-control valtype" data-valtype="checkbox" /></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="two">
+                                <div class="form-group component" rel="popover" title="Campo desplegable" trigger="manual" data-content="<form class='form'> <div class='form-group col-md-12'> <label class='control-label'>Nombre de campo</label> <input class='form-control' type='text' name='label' id='label'> <label class='control-label'>Valores: </label> <textarea class='form-control' style='min-height: 200px' id='option'> </textarea> <hr/> <button class='btn btn-info'>Guardar</button><button class='btn btn-danger'>Cancelar</button> </div> </form>" data-html="true">
+                                    <label class="col-md-12 control-label valtype" data-valtype="label">Despegable</label>
+                                    <div class="col-md-12">
+                                        <select class="form-control input-md valtype" data-valtype="option">
+                                            <option>Inserta</option>
+                                            <option>Tus</option>
+                                            <option>Valores</option>
+                                            <option>Aquí</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group component" rel="popover" title="Múltiple" trigger="manual" data-content="<form class='form'><div class='form-group col-md-12'><label class='control-label'>Nombre de campo</label><input class='form-control' type='text' name='label' id='label'><label class='control-label'>Valores: </label><textarea class='form-control' style='min-height: 200px' id='option'></textarea><hr/><button class='btn btn-info'>Guardar</button><button class='btn btn-danger'>Cancelar</button></div></form>" data-html="true">
+                                    <label class="col-md-12 control-label valtype" data-valtype="label">Despegable múltiple</label>
+                                    <div class="col-md-12">
+                                        <select class="form-control input-md valtype" multiple="multiple" data-valtype="option">
+                                            <option>Inserta</option>
+                                            <option>Tus</option>
+                                            <option>Valores</option>
+                                            <option>Aquí</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="three">
+                                <div class="form-group component" rel="popover" title="Multiples Check" trigger="manual" data-content="<form class='form'><div class='form-group col-md-12'><label class='control-label'>Etiqueta</label><input class='form-control' type='text' name='label' id='label'> <label class='control-label'>Opciones: </label><textarea class='form-control' style='min-height: 200px' id='checkboxes'></textarea><hr/><button class='btn btn-info'>Guardar</button><button class='btn btn-danger'>Cancelar</button></div></form>" data-html="true">
+                                    <label class="col-md-12 control-label valtype" data-valtype="label">Checkboxes</label>
+                                    <div class="col-md-12 valtype" data-valtype="checkboxes">
+                                        <label class="checkbox">
+                                            <input type="checkbox" value="Option one">
+                                            Primera opción
+                                        </label>
+                                        <label class="checkbox">
+                                            <input type="checkbox" value="Option two">
+                                            Segunda opción
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group component" rel="popover" title="Multiples Radios" trigger="manual" data-content="<form class='form'> <div class='form-group col-md-12'> <label class='control-label'>Etiqueta</label> <input class='form-control' type='text' name='label' id='label'> <label class='control-label'>Nombre de grupo</label> <input class='form-control' type='text' name='name' id='name'> <label class='control-label'>Opciones: </label> <textarea class='form-control' style='min-height: 200px' id='radios'></textarea> <hr/> <button class='btn btn-info'>Guardar</button><button class='btn btn-danger'>Cancelar</button> </div> </form>" data-html="true">
+                                    <label class="col-md-12 control-label valtype" data-valtype="label">Radio button</label>
+                                    <div class="col-md-12 valtype" data-valtype="radios">
+                                        <label class="radio">
+                                            <input type="radio" value="Option one" name="group" checked="checked">
+                                            Primera opción
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" value="Option two" name="group">
+                                            Segunda opción
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="four">
+                                <div class="form-group component" rel="popover" title="Campo de archivos" trigger="manual" data-content="<form class='form'> <div class='form-group col-md-12'> <label class='control-label'>Etiqueta</label> <input class='form-control' type='text' name='label' id='label'> <hr/> <button class='btn btn-info'>Guardar</button><button class='btn btn-danger'>Cancelar</button> </div> </form>" data-html="true">
+                                    <label class="col-md-12 control-label valtype" data-valtype="label">Archivo adjunto</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control-file" id="fileInput" type="file">
+                                    </div>
+                                </div>
+                                <div class="form-group component" rel="popover" title="Campo de archivos" trigger="manual" data-content="<form class='form'> <div class='form-group col-md-12'> <label class='control-label'>Etiqueta</label> <input class='form-control' type='text' name='label' id='label'> <hr/> <button class='btn btn-info'>Guardar</button><button class='btn btn-danger'>Cancelar</button> </div> </form>" data-html="true">
+                                    <label class="col-md-12 control-label valtype" data-valtype="label">Archivos adjuntos</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control-file" multiple id="fileInput" type="file">
+                                    </div>
+                                </div>
+                                <div class="form-group component" rel="popover" title="Botón" trigger="manual" data-content="<form class='form'> <div class='form-group col-md-12'> <label class='control-label'>Etiqueta de botón</label> <input class='form-control' type='text' name='label' id='button'> <label class='control-label' id=''>Type: </label> <select class='form-control input-md' id='color'> <option id='btn-default'>Default</option> <option id='btn-primary'>Primary</option> <option id='btn-info'>Info</option> <option id='btn-success'>Success</option> <option id='btn-warning'>Warning</option> <option id='btn-danger'>Danger</option> <option id='btn-inverse'>Inverse</option> </select> <hr/> <button class='btn btn-info'>Guardar</button><button class='btn btn-danger'>Cancelar</button> </div> </form>" data-html="true">
+                                    <label class="col-md-12 control-label valtype" data-valtype="label">Button</label>
+                                    <div class="col-md-12 valtype" data-valtype="button">
+                                        <button class='btn btn-success'>Button</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="five">
+                                <textarea id="source" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-sm-12 col-md-12">
+            <form method="post" enctype="multipart/form-data" id="requirement">
+                <div class="form-group">
+                    <label>Observaciones del módulo requerido</label>
+                    <textarea required cols="10" maxlength="1500" class="form-control" id="description" name="description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Prioridad</label>
+                    <select required class="form-control" id="priority" name="priority">
+                        <option value="">-Seleccionar</option>
+                        <option value="1">Baja</option>
+                        <option value="2">Media</option>
+                        <option value="3">Alta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Archivos adjuntos</label>
+                    <input type="file" multiple class="form-control-file" id="files" name="files" />
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Components/formbuilder/fb.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/requirement.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+    <script>
+        $(function () {
+            req.init("NoTemp");
+        })
+    </script>
+
+    @if (!req.showhelper)
+    {
+        <script>
+            $("#builder").addClass("hide");
+        </script>
+    }
+
+}

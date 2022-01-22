@@ -1,0 +1,373 @@
+﻿
+@{
+    var inc = (Gamasis.ProjectManagement.Models.Objects.Incident)ViewBag.Inc;
+    var userlogged = (Gamasis.ProjectManagement.Models.Objects.Account)ViewBag.UserLogged;
+    var distlist = (List<Gamasis.ProjectManagement.Models.Objects.DistributionList>)ViewBag.Distlist;
+    Page.Title = inc.name;
+    Layout = "~/Publics/Templates/System/System.cshtml";
+    bool hastaken = false;
+    if (userlogged.rol == 1 || userlogged.rol == 3)
+    {
+        hastaken = inc.checkifexistprogrammer(userlogged.id);
+    }
+}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Incidencia - @inc.name</h1>
+</div>
+@*Información*@
+<div class="card shadow mb-4">
+    <a href="#info" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="info">
+        <h6 class="m-0 font-weight-bold text-primary">Información <span class="badge @((inc.priority == 2) ? "badge-info" : ((inc.priority == 1) ? "badge-primary": "badge-danger"))">@((inc.priority == 2) ? "Media" : ((inc.priority == 1) ? "Baja" : "Alta"))</span></h6>
+    </a>
+    <div class="collapse show @((inc.priority == 2) ? "border-left-info" : ((inc.priority == 1) ? "border-left-primary": "border-left-danger"))" id="info">
+        <form id="update" method="post">
+            <div class="card-body">
+                Reportado por :<strong>
+                    @inc.accountName
+                </strong>
+                Fecha: <strong>
+                    @inc.date
+                </strong>
+                @if (inc.status == 5)
+                {
+                    <aside>
+                        Fecha en que se concluyó: <strong>
+                            @inc.concludeddate
+                        </strong>
+                    </aside>
+                }
+                <hr />
+                @if ((userlogged.rol == 1 || userlogged.rol == 3) && hastaken && inc.status != 5)
+                {
+                    <form type="POST" id="frmdl">
+                        <div class="form-group">
+                            <label>Distribución de notificaciones</label>
+                            <select name="dl" id="dl" class="form-control">
+                                <option value="">-Seleccionar</option>
+                                @foreach (Gamasis.ProjectManagement.Models.Objects.DistributionList dl in distlist)
+                                {
+                                    <option value="@dl.id">@(dl.name) - @(dl.members.Count) Miembros</option>
+                                }
+                            </select>
+                        </div>
+                    </form>
+                }
+                @if ((userlogged.rol == 1 || userlogged.rol == 3) && hastaken && inc.status != 5)
+                {
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select onchange="inc.evts.statuschange(this.value)" name="status" id="status" class="form-control">
+                            <option value="">Seleccionar</option>
+                            <option value="1">Recibido</option>
+                            <option value="2">Diagnóstico</option>
+                            <option value="3">Desarrollo</option>
+                            <option value="4">Retroalimentación</option>
+                        </select>
+                    </div>
+                    <script>
+                        $("#status").val("@inc.status");
+                    </script>
+                }
+                else
+                {
+                    <div>
+                        Ubicación en el sistema: <strong>@inc.ubication</strong>
+
+                        Estado: <strong>@((inc.status == 1) ? "Recibido" : ((inc.status == 2) ? "Diagnóstico" : ((inc.status == 3) ? "Desarrollo" : ((inc.status == 4) ? "Retroalimentación" : ((inc.status == 5) ? "Concluida" : "Cancelada")))))</strong>
+
+                        @if (inc.status == 5)
+                        {
+                            <aside>
+                                Concluido por:
+                                <strong>@inc.concludedby</strong>
+                            </aside>
+                        }
+                    </div>
+                }
+                <hr />
+                <h4 class="small font-weight-bold">Progreso<span id="prospan" class="float-right">@inc.progress %</span></h4>
+                @if ((userlogged.rol == 1 || userlogged.rol == 3) && hastaken && inc.status != 5)
+                {
+                    <div class="form-group">
+                        <input type="range" onchange="inc.evts.setValue(this.value)" name="progress" value="@inc.progress" class="form-control-range" id="progress">
+                    </div>
+                }
+                else
+                {
+                    <div class="progress mb-4">
+                        <div class="progress-bar  @((inc.status == 1) ? "bg-gradient-primary" : ((inc.status == 2) ? "bg-gradient-info" : ((inc.status == 3) ? "bg-gradient-danger" : ((inc.status == 4) ? "bg-warning" : "bg-success")))) " role="progressbar" style="width:@inc.progress%" aria-valuenow="@inc.progress"
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                }
+                <hr />
+                Descripción del problema: <strong>@inc.description</strong>
+                <hr />
+                @if ((userlogged.rol == 1 || userlogged.rol == 3) && hastaken && inc.status != 5)
+                {
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-info"><span><i class="fas fa-save"></i></span> Guardar</button>
+                    </div>
+                }
+                else if (inc.status == 4 && userlogged.rol == 2)
+                {
+                    <div class="text-right">
+                        <button type="button" data-target=".bd-example-modal-lg" data-toggle="modal" class="btn btn-danger"><span><i class="fas fa-exclamation-circle"></i></span> Aún persiste la incidencia reportada :( </button>
+                        <button type="button" id="end" class="btn btn-success"><span><i class="fas fa-check"></i></span> Se solucionó la incidencia reportada</button>
+                    </div>
+                }
+                else if ((userlogged.rol == 1 || userlogged.rol == 3) && !hastaken)
+                {
+                    <div class="text-right">
+                        <button type="button" id="tr" class="btn btn-info"><span><i class="fas fa-hand-point-up"></i></span> Tomar incidencia </button>
+                    </div>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+@if (inc.comments.Count > 0)
+{
+    <div class="card shadow mb-4">
+        <a href="#comments" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="comments">
+            <h6 class="m-0 font-weight-bold text-primary">Comentarios</h6>
+        </a>
+        <div class="collapse show @((inc.priority == 2) ? "border-left-info" : ((inc.priority == 1) ? "border-left-primary": "border-left-danger"))" id="comments">
+            <div class="card-body">
+                @foreach (Gamasis.ProjectManagement.Models.Objects.Comment p in inc.comments)
+                {
+                    @("Comentario por:") <strong>
+                        @("" + p.accountname + "")
+                    </strong>
+                    @("Fecha :") <strong>
+                        @("" + p.date + "")
+                    </strong>
+                    <hr />
+                    <p>@p.comment</p>
+                    <hr />
+                }
+            </div>
+        </div>
+    </div>
+}
+<div class="card shadow mb-4">
+    <a href="#addcomment" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="addcomment">
+        <h6 class="m-0 font-weight-bold text-primary">Añadir comentario</h6>
+    </a>
+    <div class="collapse show @((inc.priority == 2) ? "border-left-info" : ((inc.priority == 1) ? "border-left-primary": "border-left-danger"))" id="addcomment">
+        <div class="card-body">
+            <form id="comment" class="col-md-12">
+                <div class="form-group">
+                    <label for="fname">Comentario:</label>
+                    <textarea class="form-control" required name="fcomment" id="fcomment"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success"> Enviar</button>
+            </form>
+        </div>
+    </div>
+</div>
+@if (inc.feedbacks.Count > 0)
+{
+    <div class="card shadow mb-4">
+        <a href="#feedbacks" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="feedbacks">
+            <h6 class="m-0 font-weight-bold text-primary">Retroalimentación</h6>
+        </a>
+        <div class="collapse show @((inc.priority == 2) ? "border-left-info" : ((inc.priority == 1) ? "border-left-primary": "border-left-danger"))" id="feedbacks">
+            <div class="card-body">
+                @foreach (Gamasis.ProjectManagement.Models.Objects.Feedback p in inc.feedbacks)
+                {
+                    <h3>@(p.name)</h3>
+                    <br />
+                    @("Retroalimentación por:") <strong>
+                        @("" + p.accountname + "")
+                    </strong>
+                    @("Fecha :") <strong>
+                        @("" + p.date + "")
+                    </strong>
+                    <hr />
+                    <p>@p.comment</p>
+                    <hr />
+                }
+            </div>
+        </div>
+    </div>
+}
+@if ((userlogged.rol == 1 || userlogged.rol == 3) && hastaken)
+{
+    <div class="card shadow mb-4">
+        <a href="#addfeedback" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="addfeedback">
+            <h6 class="m-0 font-weight-bold text-primary">Añadir retroalimentación</h6>
+        </a>
+        <div class="collapse show @((inc.priority == 2) ? "border-left-info" : ((inc.priority == 1) ? "border-left-primary": "border-left-danger"))" id="addfeedback">
+            <div class="card-body">
+                <form id="feedback" class="col-md-12">
+                    <div class="form-group">
+                        <label for="fname">Asunto:</label>
+                        <input type="text" required class="form-control" name="fname" id="fname" />
+                    </div>
+                    <div class="form-group">
+                        <label for="fname">Descripción:</label>
+                        <textarea class="form-control" required name="fdescription" id="fdescription"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success"> Añadir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+@if (inc.programmers.Count > 0)
+{
+    <div class="card shadow mb-4">
+        <a href="#asignations" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="asignations">
+            <h6 class="m-0 font-weight-bold text-primary">Asignaciones</h6>
+        </a>
+        <div class="collapse show @((inc.priority == 2) ? "border-left-info" : ((inc.priority == 1) ? "border-left-primary": "border-left-danger"))" id="asignations">
+            <div class="card-body">
+                @foreach (Gamasis.ProjectManagement.Models.Objects.Programmer p in inc.programmers)
+                {
+                    <p>Desarrollador: <strong>@p.fullname</strong>, Celular: <strong>@p.cellphone</strong>, Correo eléctronico: <strong><a href="mailto:@p.email" target="_top">@p.email</a></strong></p>
+                }
+            </div>
+        </div>
+    </div>
+}
+    @*archivos adjuntos*@
+    <div class="card shadow mb-4">
+        <a href="#attach" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="attach">
+            <h6 class="m-0 font-weight-bold text-primary">Archivos adjuntos</h6>
+        </a>
+        <div class="collapse show @((inc.priority == 2) ? "border-bottom-info" : ((inc.priority == 1) ? "border-bottom-primary": "border-bottom-danger"))" id="attach">
+            <div class="card-body">
+                <div class="row">
+
+                    @if (inc.files.Count > 0)
+                    {
+                        foreach (Gamasis.ProjectManagement.Models.Objects.File f in inc.files)
+                        {
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            @if (f.mime == "image/png" || f.mime == "image/jpeg")
+                                            {
+                                                <div class="col-auto">
+                                                    <a data-fancybox="gallery" data-caption="@f.name" href="@Url.Content("~/Utils/Image?t=1&i=" + f.id)">
+                                                        <img title="@f.name" style="width:auto; height:auto; max-width:300px;  max-height:150px;" class="img-profile img-responsive img-bordered-sm" src="@Url.Content("~/Utils/Image?t=1&i=" + f.id)" />
+                                                    </a>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Archivo</div>
+                                                    <a href="@Url.Content("~/Utils/Image?d=1&t=1&i=" + f.id)">
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800">@f.name.Split('.').First()</div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a href="@Url.Content("~/Utils/Image?d=1&t=1&i=" + f.id)">
+                                                        <i class="fas @(f.extension.ToUpper() == "PDF" ? "fa-file-pdf" : "fa-file") fa-2x text-gray-300"></i>
+                                                    </a>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-md-12 form-group">
+                            <strong>No hay archivos adjuntos a esta incidencia</strong>
+                        </div>
+                    }
+                    @if (inc.status != 5)
+                    {
+                        <form id="addfiles" class="col-md-12" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="afiles">Añadir archivos</label>
+                                <input required type="file" name="files" multiple class="form-control-file" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (inc.revisions.Count > 0)
+    {
+        <div class="card shadow mb-4">
+            <a href="#revisions" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="revisions">
+                <h6 class="m-0 font-weight-bold text-primary">Revisiones</h6>
+            </a>
+            <div class="collapse show @((inc.priority == 2) ? "border-left-info" : ((inc.priority == 1) ? "border-left-primary": "border-left-danger"))" id="revisions">
+                <div class="card-body">
+                    @foreach (Gamasis.ProjectManagement.Models.Objects.Revision p in inc.revisions)
+                    {
+                        <h3>@(p.name)</h3>
+                        <br />
+                        @("Revisión por:") <strong>
+                            @("" + p.accountname + "")
+                        </strong>
+                        @("Fecha :") <strong>
+                            @("" + p.date + "")
+                        </strong>
+                        <hr />
+                        <p>@p.comment</p>
+                        <hr />
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    <div class="modal fade bd-example-modal-lg" id="mdlrevision" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Añadiendo revisión</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" enctype="multipart/form-data" id="revision">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nombre de revisión</label>
+                            <input autocomplete="off" required maxlength="50" type="text" class="form-control" id="name" name="name" />
+                        </div>
+                        <div class="form-group">
+                            <label>Comentarios</label>
+                            <textarea required cols="5" maxlength="250" class="form-control" id="comment" name="comment"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    @section Header {
+        <link href="@Url.Content("~/Components/fancybox/jquery.fancybox.min.css")" rel="stylesheet">
+    }
+    @section Scripts {
+        <script type="text/javascript" src="@Url.Content("~/Scripts/incident.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+        <script type="text/javascript" src="@Url.Content("~/Components/fancybox/jquery.fancybox.min.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/revision.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/feed.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/comment.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+
+        <script>
+            inc.programmer.init();
+            inc.programmer.id = @inc.id;
+            rev.init();
+            rev.attr.reqid = @inc.id;
+            rev.attr.type = 1;
+            inc.files.init();
+            inc.files.attr.reqid = @inc.id;
+            feedback.init({ type: 1,idrel: @inc.id });
+            comment.init({ type: 1,idrel: @inc.id });
+        </script>
+    }

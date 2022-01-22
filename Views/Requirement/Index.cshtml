@@ -1,0 +1,213 @@
+﻿@{
+    Page.Title = "Requerimientos";
+    Layout = "~/Publics/Templates/System/System.cshtml";
+    var userlogged = (Gamasis.ProjectManagement.Models.Objects.Account)ViewBag.UserLogged;
+    var ubilist = (List<Gamasis.ProjectManagement.Models.Objects.Setting>)ViewBag.Ubications;
+    var inclist = (List<Gamasis.ProjectManagement.Models.Objects.Requirement>)ViewBag.Requirements;
+}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Requerimientos</h1>
+    <button data-target=".bd-example-modal-lg" data-toggle="modal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-plus-circle fa-sm text-white-50"></i>
+        Añadir Nuevo Requerimiento
+    </button>
+    @*<button class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50"></i>
+            Generar Reporte
+        </button>*@
+</div>
+<div class="card border-left-primary shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Lista</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="requirements" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Módulo</th>
+                        <th>Solicitado por</th>
+                        <th>Estado</th>
+                        <th>-</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (inclist.Count > 0)
+                    {
+                        foreach (Gamasis.ProjectManagement.Models.Objects.Requirement inc in inclist)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="badge @((inc.status==5 ? "badge-success": (inc.priority == 2) ? "badge-info" : ((inc.priority == 1) ? "badge-primary": "badge-danger")))">@((inc.status == 5 ? "Completada" : (inc.priority == 2) ? "Media" : ((inc.priority == 1) ? "Baja" : "Alta")))</span>
+                                    @inc.date
+                                </td>
+                                <td>
+                                    <h4 class="small font-weight-bold">@inc.name</h4>
+                                    @if (inc.status != 1)
+                                    {
+                                        <div class="progress mb-4">
+                                            <div class="progress-bar @((inc.status == 1) ? "bg-gradient-primary" : ((inc.status == 2) ? "bg-gradient-info" : ((inc.status == 3) ? "bg-gradient-danger" : ((inc.status == 4) ? "bg-warning" : "bg-success"))))" role="progressbar" style="width:@inc.progress%" aria-valuenow="@inc.progress"
+                                                 aria-valuemin="0" aria-valuemax="100">@inc.progress%</div>
+                                            </div>
+                                    }
+                                </td>
+                                <td>@inc.accountName</td>
+                                <td>@((inc.status == 1) ? "Recibido" : ((inc.status == 2) ? "Diagnóstico" : ((inc.status == 3) ? "Desarrollo" + " - " + ((inc.statussubtype == 1) ? "Diseño" : ((inc.statussubtype == 2) ? "Codificación" : ((inc.statussubtype == 3) ? "Pruebas" : "Retroalimentación del diseño"))) : ((inc.status == 4) ? "Retroalimentación" : ((inc.status == 5) ? "Concluida" : "Cancelada")))))</td>
+                                <td>
+                                    <a title="Ver más" href="#" onclick="req.evts.info('@inc.id');" class="btn btn-sm btn-info btn-circle">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    @if (userlogged.rol == 1 && inc.status == 1)
+                                    {
+                                        <a title="Eliminar" href="#" onclick="req.evts.delete('@inc.id');" class="btn btn-sm btn-danger btn-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    }
+                                    @if (userlogged.rol == 1 || userlogged.rol == 3)
+                                    {
+                                        if (inc.programmers.Count < 3)
+                                        {
+                                            if (!inc.checkifexistprogrammer(userlogged.id))
+                                            {
+                                                <a title="@((inc.programmers.Count == 0) ? "Tomar incidencia" : (inc.programmers.Count == 1) ? "Tomar incidencia, actualmente ya hay un programador asignado" : (inc.programmers.Count == 2) ? "Tomar incidencia, actualmente ya hay dos programadores asignado" : "Tomar incidencia, actualmente ya hay tres programadores asignado" )" href="#" onclick="req.programmer.assing('@inc.id');" class="btn btn-sm btn-success btn-circle">
+                                                    <i class="fas  @((inc.programmers.Count == 0) ? "fa-hand-point-up" : (inc.programmers.Count == 1) ? "fa-dice-one" : (inc.programmers.Count == 2) ? "fa-dice-two" : "fa-dice-three" )"></i>
+                                                </a>
+                                            }
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>
+                                <strong>Sin requerimientos solicitados</strong>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@*Modales*@
+<div class="modal fade bd-example-modal-lg" id="mdlincident" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Nuevo requerimiento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" enctype="multipart/form-data" id="requirement">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input autocomplete="off" required maxlength="50" type="text" class="form-control" id="name" name="name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Ubicación del módulo requerido</label>
+                        <select class="form-control" id="ubication" name="ubication">
+                            <option value="">-Selecciona</option>
+                            @foreach (Gamasis.ProjectManagement.Models.Objects.Setting sett in ubilist)
+                            {
+                                <option value="@sett.value">@sett.value</option>
+                            }
+                        </select>
+                        @*<input autocomplete="off" required type="text" maxlength="250" class="form-control" id="ubication" name="ubication" />*@
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <select onchange="req.evts.typechange(this.value)" required class="form-control" id="type" name="type">
+                            <option value="">-Seleccionar</option>
+                            <option value="1">Reporte</option>
+                            <option value="2">Módulo</option>
+                            <option value="3">Modificación</option>
+                        </select>
+                    </div>
+                    <div id="dcolumns" class="hide form-group">
+                        <label>Número de columnas</label>
+                        <input min="1" max="20" type="number" class="form-control" id="ncolumns" name="ncolumns" />
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="showhelper" id="showhelper">
+                            <label class="custom-control-label" for="showhelper">Mostar el constructor de formularios</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Continuar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section topbarsearch{
+    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+        <div class="input-group">
+            <input type="text" data-box="box" class="form-control bg-light border-0 small" placeholder="Buscar en la lista..." aria-label="Search"
+                   aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@section notlist{
+    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+    <li class="nav-item dropdown no-arrow d-sm-none">
+        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-search fa-fw"></i>
+        </a>
+        <!-- Dropdown - Messages -->
+        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+            <div class="form-inline mr-auto w-100 navbar-search">
+                <div class="input-group">
+                    <input type="text" data-box="box" class="form-control bg-light border-0 small" placeholder="Buscar en la lista..."
+                           aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+}
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Scripts/requirement.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+    <script>
+        $(function () {
+            req.init("Temp");
+        })
+    </script>
+    <script type="text/javascript" src="@Url.Content("~/Components/SearchBox/searchbox.min.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+    <script>
+        searchbox.init({
+            onChange: function (e) { //OnChange function
+                console.log(e);
+            },
+            beforeSend: function (e) { //A function to do before the searching
+                console.log(e);
+            },
+            maxLength: 2, //set the max length to start a search
+            tableTarget: 'requirements', //The target of the table
+            boxTarget: '[data-box="box"]' //The target of the box
+        });
+    </script>
+
+}

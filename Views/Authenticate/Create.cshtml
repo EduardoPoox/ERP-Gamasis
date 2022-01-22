@@ -1,0 +1,47 @@
+﻿@{
+    Page.Title = "Registro";
+    Layout = "~/Publics/Templates/Login/Login.cshtml";
+    var accountforconvert = (Gamasis.ProjectManagement.Models.Objects.Account)ViewBag.Info;
+}
+<form id="register" method="post" role="form">
+    <div class="col-md-12 login-box-body">
+        <p class="login-box-msg">
+            Completa tu registro, recuerda:
+            <strong><br />Esta cuenta es solo para el administrador de proyectos</strong>
+        </p>
+        <div class="form-group">
+            <label for="names">Proyecto</label>
+            <p><strong>@accountforconvert.data.comesfrom </strong></p>
+        </div>
+        <div class="form-group">
+            <label for="names">Nombres</label>
+            <input class="form-control" required value="@accountforconvert.data.name" name="names" id="names" placeholder="Escribe tus nombres" />
+        </div>
+        <div class="form-group">
+            <label for="lastname">Apellidos</label>
+            <input class="form-control" required value="@accountforconvert.data.lastname" name="lastname" id="lastname" placeholder="Escribe tus apellidos" />
+        </div>
+        <div class="form-group">
+            <label for="mail">Correo eléctronico</label>
+            <input class="form-control" required type="email" value="@accountforconvert.data.email" name="mail" id="mail" placeholder="Escribe tus télefono correo" />
+        </div>
+        <div class="form-group">
+            <label for="cellphone">Télefono celular</label>
+            <input class="form-control" required type="tel" value="@accountforconvert.data.cellphone" maxlength="10" minlength="10" name="cellphone" id="cellphone" placeholder="Escribe tus télefono celular" />
+        </div>
+        <div class="form-group">
+            <label for="phone">Télefono de casa</label>
+            <input class="form-control" required type="tel" value="@accountforconvert.data.phone" maxlength="10" minlength="10" name="phone" id="phone" placeholder="Escribe tus télefono" />
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-8 col-xs-4">
+                <button class="btn btn-primary btn-block btn-flat" type="submit">Registrar</button>
+            </div>
+        </div>
+            <input class="form-control" required type="hidden" value="@accountforconvert.data.idfromproject" name="idfromproject" id="idfromproject" />
+    </div>
+</form>
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Scripts/register.js?v=" + DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+    }

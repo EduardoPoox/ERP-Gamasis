@@ -1,0 +1,29 @@
+﻿
+@{
+    Page.Title = "Activando tu cuenta";
+    Layout = "~/Publics/Templates/Login/Login.cshtml";
+    //var account = (Gamasis.ProjectManagement.Models.Objects.Account)ViewBag.info;
+}
+
+<div class="login-box-body">
+
+@if (ViewBag.res == 1)
+{
+    <p class="login-box-msg">
+        Listo tu cuenta está activa ahora puedes ingresar al sistema.
+    </p>
+    <div class="form-group text-center">
+        <a class="btn btn-success" href="@Url.Action("Index", "Authenticate")">Iniciar sesión...</a>
+    </div>
+}
+else
+{
+    <p class="login-box-msg">
+        Un error imprevisto ha ocurrido, intenta nuevamente
+    </p>
+    <div class="form-group text-center">
+        <a class="btn btn-success" onclick="location.reload();">Reintentar</a>
+    </div>
+}
+
+</div>

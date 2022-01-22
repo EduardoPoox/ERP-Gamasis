@@ -1,0 +1,760 @@
+/*
+* SEM Dialog Component
+* Version 1.1
+* http://semsource.com.mx/
+* victor.solis@semsource.com.mx
+*/
+@import 'https://fonts.googleapis.com/css?family=Roboto:400,500,700';
+.sem-dialog-overlay {
+	background: rgba(0, 0, 0, .40);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 9999999999;
+	animation: overlayAnimate 0.1s ease-in-out;
+	-moz-animation: overlayAnimate 0.1s ease-in-out;
+	-webkit-animation: overlayAnimate 0.1s ease-in-out;
+}
+
+.sem-dialog
+{
+	width: 88%;
+	max-width: 340px;
+	height: auto;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 99999999999;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+}
+.dialog-wrapper {
+	width: 100%;
+	border-radius: 4px;
+	background: #FAFAFA;
+  	box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	animation: dialogAnimate 0.1s forwards;
+	-moz-animation: dialogAnimate 0.1s forwards;
+	-webkit-animation: dialogAnimate 0.1s forwards;
+}
+
+.sem-dialog .dialog-title {
+	color: #212121;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 700;
+	font-size: 16px;
+	padding: 24px 24px 0 24px;
+	text-rendering: optimizeLegibility;
+}
+.sem-dialog .dialog-title ~ .dialog-content
+{
+	padding-top: 12px;
+}
+.sem-dialog .dialog-content {
+	color: #757575;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
+	padding: 24px;
+	font-size: 15px;
+	line-height: 1.6em;
+	text-rendering: optimizeLegibility;
+}
+span.dialog-content
+{
+	color: #757575;
+	position: relative;
+	top: -3px;
+}
+.dialog-buttons {
+	padding: 0 24px 12px 24px;
+	text-align: right;
+}
+
+.dialog-buttons button {
+	border: 0;
+	font-family: 'Roboto', sans-serif;
+	background: transparent !important;
+	padding: 10px;
+	text-transform: uppercase;
+	color: #757575;
+	font-weight: 700;
+	font-size: 16px;
+	cursor: pointer;
+	margin: 0px;
+	transition: all .15s ease;
+	-moz-transition: all .15s ease;
+	-webkit-transition: all .15s ease;
+	text-rendering: optimizeLegibility;
+}
+.dialog-buttons button.btn-default:hover, .dialog-buttons button.btn-default:focus
+{
+	border: none;
+}
+.dialog-buttons button:hover
+{
+	background: transparent !important;
+}
+
+.dialog-buttons button:hover {
+	outline: 0;
+	background: rgba(200, 200, 200, .50);
+	color: #2196F3;
+}
+
+.dialog-buttons button:focus {
+	outline: 0;
+	color: #2196F3;
+}
+
+.dialog-progress {
+	margin-top: 12px;
+	width: 100%;
+	height: 3px;
+	background: #E9E9E9;
+	border: 1px solid #CCC;
+	position: relative
+}
+
+.dialog-progress-bar {
+	width: 0;
+	height: 3px;
+	background: #3498db;
+	border: 1px solid #3498db;
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	transition: width .5s ease
+}
+
+.dialog-progress-handler {
+	margin: 10px 0 20px;
+	font-size: 12px
+}
+
+.dialog-progress-handler .percent {
+	width: 50%;
+	float: left;
+	display: inline-block
+}
+
+.dialog-progress-handler .tasks {
+	width: 50%;
+	float: right;
+	display: inline-block;
+	text-align: right
+}
+
+.dialog-progress-handler .tasks span:first-child {
+	margin-right: 1px
+}
+
+.dialog-progress-handler .tasks span:first-child:after {
+	content: '/';
+	display: inline-block
+}
+.sem-dialog-loader
+{
+	display: inline-block;
+	position: relative;
+	top: 3px;
+}
+.sem-preloader {
+	font-size: 0;
+	display: inline-block;
+	-webkit-animation: outer 6600ms linear infinite;
+	animation: outer 6600ms linear infinite
+}
+
+.sem-preloader svg {
+	-webkit-animation: inner 1320ms linear infinite;
+	animation: inner 1320ms linear infinite
+}
+
+.sem-preloader svg circle {
+	fill: none;
+	stroke-linecap: square;
+	-webkit-animation: arc 3s cubic-bezier(.8, 0, .4, .8) infinite, color 6s ease infinite;
+	animation: arc 3s cubic-bezier(.8, 0, .4, .8) infinite, color 6s ease infinite
+}
+
+@keyframes dialogAnimate
+{
+	0%
+	{
+		opacity: 0.3;
+		transform: scale(1.05, 1.05);
+	}
+	100%
+	{
+		opacity: 1;
+		transform: scale(1, 1);
+	}
+}
+
+@keyframes overlayAnimate
+{
+	0%
+	{
+		opacity: 0.3;
+	}
+	100%
+	{
+		opacity: 1;
+	}
+}
+
+@
+-webkit-keyframes outer { 0%{
+		-webkit-transform: rotate(0);
+		transform: rotate(0)
+	}
+	100% {
+		-webkit-transform :rotate(360deg);
+		transform:rotate(360deg)
+	}
+}
+@keyframes outer { 
+	0%{
+		-webkit-transform: rotate(0);
+		transform: rotate(0)
+	}
+
+	100% {
+		-webkit-transform:rotate(360deg);
+		transform:rotate(360deg)
+	}
+}
+@-webkit-keyframes inner { 
+	0%	{
+		-webkit-transform: rotate(-100.8deg);
+		transform: rotate(-100.8deg)
+	}
+	100% {
+		-webkit-transform:rotate(0);
+		transform:rotate(0)
+	}
+}
+@keyframes inner { 
+	0%
+	{
+		-webkit-transform: rotate(-100.8deg);
+		transform: rotate(-100.8deg)
+	}
+
+	100% {
+		-webkit-transform:rotate(0);
+		transform:rotate(0)
+	}
+}
+@-webkit-keyframes arc { 
+	0% {
+		stroke-dasharray: 1 210.48670779px;
+		stroke-dashoffset: 0
+	}
+
+	40%{
+		stroke-dasharray: 151.55042961px, 210.48670779px;
+		stroke-dashoffset: 0
+	}
+	100%{
+		stroke-dasharray:1 210.48670779px;
+		stroke-dashoffset: -151.55042961px
+	}
+}
+@keyframes arc { 
+	0% {
+		stroke-dasharray: 1 210.48670779px;
+		stroke-dashoffset: 0
+	}
+	40% {
+	stroke-dasharray: 151.55042961px, 210.48670779px;
+	stroke-dashoffset: 0
+	}
+	100% {
+	stroke-dasharray: 1 210.48670779px;
+	stroke-dashoffset: -151.55042961px
+	}
+}
+
+@keyframes color{
+  100%, 0%{
+    stroke: #d62d20;
+  }
+  40%{
+    stroke: #0057e7;
+  }
+  66%{
+    stroke: #0057e7;
+  }
+  80%, 90%{
+    stroke: #ffa700;
+  }
+}
+/**************************/
+/* STYLES FOR THE SPINNER  */
+/**************************/
+/* Copy: Materialisecss.com
+ * Constants:
+ *      STROKEWIDTH = 3px
+ *      ARCSIZE     = 270 degrees (amount of circle the arc takes up)
+ *      ARCTIME     = 1333ms (time it takes to expand and contract arc)
+ *      ARCSTARTROT = 216 degrees (how much the start location of the arc
+ *                                should rotate each time, 216 gives us a
+ *                                5 pointed star shape (it's 360/5 * 3).
+ *                                For a 7 pointed star, we might do
+ *                                360/7 * 3 = 154.286)
+ *      CONTAINERWIDTH = 28px
+ *      SHRINK_TIME = 400ms
+ */
+.preloader-wrapper {
+  display: inline-block;
+  position: relative;
+  width: 48px;
+  height: 48px; }
+  .preloader-wrapper.small-dialog
+  {
+   width: 20px;
+   height: 20px;
+  }
+  .preloader-wrapper.small {
+    width: 36px;
+    height: 36px; }
+  .preloader-wrapper.big {
+    width: 64px;
+    height: 64px; }
+  .preloader-wrapper.active {
+    /* duration: 360 * ARCTIME / (ARCSTARTROT + (360-ARCSIZE)) */
+    -webkit-animation: container-rotate 1568ms linear infinite;
+    animation: container-rotate 1568ms linear infinite; }
+
+@-webkit-keyframes container-rotate {
+  to {
+    -webkit-transform: rotate(360deg); } }
+
+@keyframes container-rotate {
+  to {
+    transform: rotate(360deg); } }
+
+.spinner-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0; }
+
+.spinner-blue, .spinner-blue-only {
+  border-color: #4285f4; }
+
+.spinner-red, .spinner-red-only {
+  border-color: #db4437; }
+
+.spinner-yellow, .spinner-yellow-only {
+  border-color: #f4b400; }
+
+.spinner-green, .spinner-green-only {
+  border-color: #0f9d58; }
+
+/**
+ * IMPORTANT NOTE ABOUT CSS ANIMATION PROPERTIES (keanulee):
+ *
+ * iOS Safari (tested on iOS 8.1) does not handle animation-delay very well - it doesn't
+ * guarantee that the animation will start _exactly_ after that value. So we avoid using
+ * animation-delay and instead set custom keyframes for each color (as redundant as it
+ * seems).
+ *
+ * We write out each animation in full (instead of separating animation-name,
+ * animation-duration, etc.) because under the polyfill, Safari does not recognize those
+ * specific properties properly, treats them as -webkit-animation, and overrides the
+ * other animation rules. See https://github.com/Polymer/platform/issues/53.
+ */
+.active .spinner-layer.spinner-blue {
+  /* durations: 4 * ARCTIME */
+  -webkit-animation: fill-unfill-rotate 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both, blue-fade-in-out 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  animation: fill-unfill-rotate 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both, blue-fade-in-out 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both; }
+
+.active .spinner-layer.spinner-red {
+  /* durations: 4 * ARCTIME */
+  -webkit-animation: fill-unfill-rotate 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both, red-fade-in-out 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  animation: fill-unfill-rotate 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both, red-fade-in-out 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both; }
+
+.active .spinner-layer.spinner-yellow {
+  /* durations: 4 * ARCTIME */
+  -webkit-animation: fill-unfill-rotate 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both, yellow-fade-in-out 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  animation: fill-unfill-rotate 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both, yellow-fade-in-out 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both; }
+
+.active .spinner-layer.spinner-green {
+  /* durations: 4 * ARCTIME */
+  -webkit-animation: fill-unfill-rotate 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both, green-fade-in-out 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  animation: fill-unfill-rotate 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both, green-fade-in-out 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both; }
+
+.active .spinner-layer.spinner-blue-only, .active .spinner-layer.spinner-red-only, .active .spinner-layer.spinner-yellow-only, .active .spinner-layer.spinner-green-only {
+  /* durations: 4 * ARCTIME */
+  opacity: 1;
+  -webkit-animation: fill-unfill-rotate 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  animation: fill-unfill-rotate 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both; }
+
+@-webkit-keyframes fill-unfill-rotate {
+  /* 0.5 * ARCSIZE */
+  /* 1   * ARCSIZE */
+  /* 1.5 * ARCSIZE */
+  /* 2   * ARCSIZE */
+  /* 2.5 * ARCSIZE */
+  /* 3   * ARCSIZE */
+  /* 3.5 * ARCSIZE */
+  /* 4   * ARCSIZE */
+  12.5% {
+    -webkit-transform: rotate(135deg); }
+
+  25% {
+    -webkit-transform: rotate(270deg); }
+
+  37.5% {
+    -webkit-transform: rotate(405deg); }
+
+  50% {
+    -webkit-transform: rotate(540deg); }
+
+  62.5% {
+    -webkit-transform: rotate(675deg); }
+
+  75% {
+    -webkit-transform: rotate(810deg); }
+
+  87.5% {
+    -webkit-transform: rotate(945deg); }
+
+  to {
+    -webkit-transform: rotate(1080deg); } }
+
+@keyframes fill-unfill-rotate {
+  /* 0.5 * ARCSIZE */
+  /* 1   * ARCSIZE */
+  /* 1.5 * ARCSIZE */
+  /* 2   * ARCSIZE */
+  /* 2.5 * ARCSIZE */
+  /* 3   * ARCSIZE */
+  /* 3.5 * ARCSIZE */
+  /* 4   * ARCSIZE */
+  12.5% {
+    transform: rotate(135deg); }
+
+  25% {
+    transform: rotate(270deg); }
+
+  37.5% {
+    transform: rotate(405deg); }
+
+  50% {
+    transform: rotate(540deg); }
+
+  62.5% {
+    transform: rotate(675deg); }
+
+  75% {
+    transform: rotate(810deg); }
+
+  87.5% {
+    transform: rotate(945deg); }
+
+  to {
+    transform: rotate(1080deg); } }
+
+@-webkit-keyframes blue-fade-in-out {
+  from {
+    opacity: 1; }
+
+  25% {
+    opacity: 1; }
+
+  26% {
+    opacity: 0; }
+
+  89% {
+    opacity: 0; }
+
+  90% {
+    opacity: 1; }
+
+  100% {
+    opacity: 1; } }
+
+@keyframes blue-fade-in-out {
+  from {
+    opacity: 1; }
+
+  25% {
+    opacity: 1; }
+
+  26% {
+    opacity: 0; }
+
+  89% {
+    opacity: 0; }
+
+  90% {
+    opacity: 1; }
+
+  100% {
+    opacity: 1; } }
+
+@-webkit-keyframes red-fade-in-out {
+  from {
+    opacity: 0; }
+
+  15% {
+    opacity: 0; }
+
+  25% {
+    opacity: 1; }
+
+  50% {
+    opacity: 1; }
+
+  51% {
+    opacity: 0; } }
+
+@keyframes red-fade-in-out {
+  from {
+    opacity: 0; }
+
+  15% {
+    opacity: 0; }
+
+  25% {
+    opacity: 1; }
+
+  50% {
+    opacity: 1; }
+
+  51% {
+    opacity: 0; } }
+
+@-webkit-keyframes yellow-fade-in-out {
+  from {
+    opacity: 0; }
+
+  40% {
+    opacity: 0; }
+
+  50% {
+    opacity: 1; }
+
+  75% {
+    opacity: 1; }
+
+  76% {
+    opacity: 0; } }
+
+@keyframes yellow-fade-in-out {
+  from {
+    opacity: 0; }
+
+  40% {
+    opacity: 0; }
+
+  50% {
+    opacity: 1; }
+
+  75% {
+    opacity: 1; }
+
+  76% {
+    opacity: 0; } }
+
+@-webkit-keyframes green-fade-in-out {
+  from {
+    opacity: 0; }
+
+  65% {
+    opacity: 0; }
+
+  75% {
+    opacity: 1; }
+
+  90% {
+    opacity: 1; }
+
+  100% {
+    opacity: 0; } }
+
+@keyframes green-fade-in-out {
+  from {
+    opacity: 0; }
+
+  65% {
+    opacity: 0; }
+
+  75% {
+    opacity: 1; }
+
+  90% {
+    opacity: 1; }
+
+  100% {
+    opacity: 0; } }
+
+/**
+ * Patch the gap that appear between the two adjacent div.circle-clipper while the
+ * spinner is rotating (appears on Chrome 38, Safari 7.1, and IE 11).
+ */
+.gap-patch {
+  position: absolute;
+  top: 0;
+  left: 45%;
+  width: 10%;
+  height: 100%;
+  overflow: hidden;
+  border-color: inherit; }
+
+.gap-patch .circle {
+  width: 1000%;
+  left: -450%; }
+
+.circle-clipper {
+  display: inline-block;
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  border-color: inherit; }
+  .circle-clipper .circle {
+    width: 200%;
+    height: 100%;
+    border-width: 2px;
+    /* STROKEWIDTH */
+    border-style: solid;
+    border-color: inherit;
+    border-bottom-color: transparent !important;
+    border-radius: 50%;
+    -webkit-animation: none;
+    animation: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0; }
+  .circle-clipper.left .circle {
+    left: 0;
+    border-right-color: transparent !important;
+    -webkit-transform: rotate(129deg);
+    transform: rotate(129deg); }
+  .circle-clipper.right .circle {
+    left: -100%;
+    border-left-color: transparent !important;
+    -webkit-transform: rotate(-129deg);
+    transform: rotate(-129deg); }
+
+.active .circle-clipper.left .circle {
+  /* duration: ARCTIME */
+  -webkit-animation: left-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  animation: left-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite both; }
+
+.active .circle-clipper.right .circle {
+  /* duration: ARCTIME */
+  -webkit-animation: right-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  animation: right-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite both; }
+
+@-webkit-keyframes left-spin {
+  from {
+    -webkit-transform: rotate(130deg); }
+
+  50% {
+    -webkit-transform: rotate(-5deg); }
+
+  to {
+    -webkit-transform: rotate(130deg); } }
+
+@keyframes left-spin {
+  from {
+    transform: rotate(130deg); }
+
+  50% {
+    transform: rotate(-5deg); }
+
+  to {
+    transform: rotate(130deg); } }
+
+@-webkit-keyframes right-spin {
+  from {
+    -webkit-transform: rotate(-130deg); }
+
+  50% {
+    -webkit-transform: rotate(5deg); }
+
+  to {
+    -webkit-transform: rotate(-130deg); } }
+
+@keyframes right-spin {
+  from {
+    transform: rotate(-130deg); }
+
+  50% {
+    transform: rotate(5deg); }
+
+  to {
+    transform: rotate(-130deg); } }
+
+#spinnerContainer.cooldown {
+  /* duration: SHRINK_TIME */
+  -webkit-animation: container-rotate 1568ms linear infinite, fade-out 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  animation: container-rotate 1568ms linear infinite, fade-out 400ms cubic-bezier(0.4, 0, 0.2, 1); }
+/*.sem-loader {
+  width: 25px;
+  height: 25px;
+	display: inline-block;
+}
+
+.sem-circular{
+ animation: rotate 3s linear infinite;
+ height: 20px;
+ position: relative;
+ width: 20px;
+}
+
+
+.sem-path {
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+  animation: 
+   dash 2.2s ease infinite,
+   color 6s ease infinite
+  ;
+  stroke-linecap: round;
+}
+
+@keyframes rotate{
+ 100%{
+  transform: rotate(360deg);
+ }
+}
+@keyframes dash{
+ 0%{
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+ }
+ 50%{
+  stroke-dasharray: 89,200;
+  stroke-dashoffset: -35;
+ }
+ 100%{
+  stroke-dasharray: 89,200;
+  stroke-dashoffset: -124;
+ }
+}
+@keyframes color{
+  100%, 0%{
+    stroke: #d62d20;
+  }
+  40%{
+    stroke: #0057e7;
+  }
+  66%{
+    stroke: #0057e7;
+  }
+  80%, 90%{
+    stroke: #ffa700;
+  }
+}*/

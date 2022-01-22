@@ -1,0 +1,172 @@
+﻿
+@{
+    Page.Title = "Inicio";
+    Layout = "~/Publics/Templates/System/System.cshtml";
+    var dash = (Gamasis.ProjectManagement.Models.Objects.Views.Dashboard)ViewBag.dash;
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Inicio</h1>
+    @*<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50"></i>
+            Generate Report
+        </a>*@
+</div>
+<!-- Content Row -->
+<div class="row">
+    <!-- Incindencias reportadas -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Incindencias reportadas</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@dash.reportedincindences</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-unlink fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Incindencias concluidas -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Incindencias concluidas</div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@dash.concludedincindentpercent%</div>
+                            </div>
+                            <div class="col">
+                                <div class="progress progress-sm mr-2">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: @dash.concludedincindentpercent%" aria-valuenow="@dash.concludedincindentpercent"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modulos solicitados -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Módulos solicitados</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@dash.requestedmodules</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-chalkboard-teacher fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Módulos concluidos -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Módulos concluidos</div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@dash.concludedmodulepercent%</div>
+                            </div>
+                            <div class="col">
+                                <div class="progress progress-sm mr-2">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: @dash.concludedmodulepercent%" aria-valuenow="@dash.concludedmodulepercent"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xl-6 col-lg-6">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Estadística</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart-pie pt-4 pb-2">
+                    <canvas id="statisticsChart"></canvas>
+                </div>
+                <div class="mt-4 text-center small">
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-success"></i> Requerimientos
+                    </span>
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-danger"></i> Requerimientos concluidos
+                    </span>
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-primary"></i> Incidencias
+                    </span>
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-info"></i> Incidencias concluidas
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Components/chartjs/Chart.min.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+    <script>
+        var ctx = document.getElementById("statisticsChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["Incidencias", "Inc Concluidas", "Requerimientos", "Req Concluidos"],
+                datasets: [{
+                    data: [@dash.reportedincindences, @dash.concludedincindences, @dash.requestedmodules, @dash.concludedmodules],
+                    backgroundColor: ['#4e73df', '#36b9cc', '#1cc88a', '#d9534f'],
+                    hoverBackgroundColor: ['#2e59d9', '#2e59d9', '#2e59d9', '#2e59d9'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+
+
+    </script>
+}

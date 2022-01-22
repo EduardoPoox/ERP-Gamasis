@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://gamasis.com.mx/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://gamasis.com.mx/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://gamasis.com.mx/">
+      <s:element name="Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginResult" type="tns:LoginUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LoginUser">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:GRes">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="UserData" type="tns:User" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="GRes">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Ok" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ErrorCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ErrorDescription" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="User">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Firstname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Lastname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SecondLastname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Profile" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Active" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Role" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GenericRole" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="From" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Phone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdditionalData" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LoginAlave">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginAlaveResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginAlaveResult" type="tns:LoginUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginGamasis">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginGamasisResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginGamasisResult" type="tns:LoginUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginBioMatcher">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginBioMatcherResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginBioMatcherResult" type="tns:LoginUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginAlaveSoapIn">
+    <wsdl:part name="parameters" element="tns:LoginAlave" />
+  </wsdl:message>
+  <wsdl:message name="LoginAlaveSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginAlaveResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginGamasisSoapIn">
+    <wsdl:part name="parameters" element="tns:LoginGamasis" />
+  </wsdl:message>
+  <wsdl:message name="LoginGamasisSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginGamasisResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginBioMatcherSoapIn">
+    <wsdl:part name="parameters" element="tns:LoginBioMatcher" />
+  </wsdl:message>
+  <wsdl:message name="LoginBioMatcherSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginBioMatcherResponse" />
+  </wsdl:message>
+  <wsdl:portType name="UsersSoap">
+    <wsdl:operation name="Login">
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoginAlave">
+      <wsdl:input message="tns:LoginAlaveSoapIn" />
+      <wsdl:output message="tns:LoginAlaveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoginGamasis">
+      <wsdl:input message="tns:LoginGamasisSoapIn" />
+      <wsdl:output message="tns:LoginGamasisSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoginBioMatcher">
+      <wsdl:input message="tns:LoginBioMatcherSoapIn" />
+      <wsdl:output message="tns:LoginBioMatcherSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="UsersSoap" type="tns:UsersSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://gamasis.com.mx/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginAlave">
+      <soap:operation soapAction="http://gamasis.com.mx/LoginAlave" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginGamasis">
+      <soap:operation soapAction="http://gamasis.com.mx/LoginGamasis" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginBioMatcher">
+      <soap:operation soapAction="http://gamasis.com.mx/LoginBioMatcher" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="UsersSoap12" type="tns:UsersSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="http://gamasis.com.mx/Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginAlave">
+      <soap12:operation soapAction="http://gamasis.com.mx/LoginAlave" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginGamasis">
+      <soap12:operation soapAction="http://gamasis.com.mx/LoginGamasis" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginBioMatcher">
+      <soap12:operation soapAction="http://gamasis.com.mx/LoginBioMatcher" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Users">
+    <wsdl:port name="UsersSoap" binding="tns:UsersSoap">
+      <soap:address location="http://192.168.1.100/BioWebServices/Ext/GenCredentials/Users.asmx" />
+    </wsdl:port>
+    <wsdl:port name="UsersSoap12" binding="tns:UsersSoap12">
+      <soap12:address location="http://192.168.1.100/BioWebServices/Ext/GenCredentials/Users.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,293 @@
+/*
+* SEM Dialog Component
+* Version 1.1
+* http://semsource.com.mx/
+* victor.solis@semsource.com.mx
+*/
+@import 'https://fonts.googleapis.com/css?family=Roboto:400,500,700';
+.sem-dialog-overlay {
+	background: rgba(0, 0, 0, .40);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 9999999999;
+	animation: overlayAnimate 0.1s ease-in-out;
+	-moz-animation: overlayAnimate 0.1s ease-in-out;
+	-webkit-animation: overlayAnimate 0.1s ease-in-out;
+}
+
+.sem-dialog
+{
+	width: 88%;
+    max-width: 320px;
+	height: auto;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 99999999999;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+}
+.dialog-wrapper {
+	width: 100%;
+	border-radius: 2px;
+	background: #FAFAFA;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	animation: dialogAnimate 100ms forwards;
+	-moz-animation: dialogAnimate 100ms forwards;
+	-webkit-animation: dialogAnimate 100ms forwards;
+}
+
+.sem-dialog .dialog-title {
+	color: #212121;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 700;
+	font-size: 16px;
+	padding: 18px 24px 0 24px;
+	text-rendering: optimizeLegibility;
+}
+.sem-dialog .dialog-title ~ .dialog-content
+{
+	padding-top: 12px;
+}
+.sem-dialog .dialog-content {
+	color: #757575;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
+	font-size: 15px;
+	line-height: 1.6em;
+	text-rendering: optimizeLegibility;
+    padding: 24px;
+    position: relative;
+}
+.sem-dialog-loader ~ .dialog-text
+{
+    padding-left: 56px;
+    display: table-cell;
+    width: 95%;
+    vertical-align: middle;
+}
+.dialog-buttons {
+	padding: 0 12px 12px 12px;
+	text-align: right;
+}
+
+.dialog-buttons button {
+	border: 0;
+	font-family: 'Roboto', sans-serif;
+	background: transparent !important;
+	padding: 8px 10px;
+	text-transform: uppercase;
+	color: #757575;
+	font-weight: 700;
+	font-size: 16px;
+	cursor: pointer;
+	margin: 0px;
+	text-rendering: optimizeLegibility;
+    outline: none !important;
+}
+.dialog-buttons button.btn-default:hover, .dialog-buttons button.btn-default:focus
+{
+	border: none;
+}
+.dialog-buttons button:hover
+{
+	background: transparent !important;
+}
+
+.dialog-buttons button:hover {
+	outline: 0;
+	background: rgba(200, 200, 200, .50);
+	color: #2196F3;
+}
+
+.dialog-buttons button:focus {
+	outline: 0;
+	color: #2196F3;
+}
+
+.dialog-progress {
+	margin-top: 12px;
+	width: 100%;
+	height: 3px;
+	background: #E9E9E9;
+	border: 1px solid #CCC;
+	position: relative
+}
+
+.dialog-progress-bar {
+	width: 0;
+	height: 3px;
+	background: #3498db;
+	border: 1px solid #3498db;
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	transition: width .5s ease
+}
+
+.dialog-progress-handler {
+	margin: 10px 0 20px;
+	font-size: 12px
+}
+
+.dialog-progress-handler .percent {
+	width: 50%;
+	float: left;
+	display: inline-block
+}
+
+.dialog-progress-handler .tasks {
+	width: 50%;
+	float: right;
+	display: inline-block;
+	text-align: right
+}
+
+.dialog-progress-handler .tasks span:first-child {
+	margin-right: 1px
+}
+
+.dialog-progress-handler .tasks span:first-child:after {
+	content: '/';
+	display: inline-block
+}
+.sem-dialog-loader
+{
+	display: inline-block;
+	position: absolute;
+    top: 53%;
+    left: 40px;
+    transform: translate(-50%, 0);
+    -moz-transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
+}
+.sem-dialog-loader.small
+{
+    transform: translate(-50%, -50%) scale(0.6, 0.6);
+    -moz-transform: translate(-50%, -50%) scale(0.6, 0.6);
+    -webkit-transform: translate(-50%, -50%) scale(0.6, 0.6);
+}
+
+@keyframes dialogAnimate
+{
+	0%
+	{
+		transform: scale(1.05, 1.05);
+	}
+	100%
+	{
+		transform: scale(1, 1);
+	}
+}
+
+@keyframes overlayAnimate
+{
+	0%
+	{
+		opacity: 0.3;
+	}
+	100%
+	{
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes color {
+  100%,
+  0% {
+    stroke: #d62d20;
+  }
+  40% {
+    stroke: #0057e7;
+  }
+  66% {
+    stroke: #008744;
+  }
+  80%,
+  90% {
+    stroke: #ffa700;
+  }
+}
+@keyframes color {
+  100%,
+  0% {
+    stroke: #d62d20;
+  }
+  40% {
+    stroke: #0057e7;
+  }
+  66% {
+    stroke: #008744;
+  }
+  80%,
+  90% {
+    stroke: #ffa700;
+  }
+}
+
+
+.spinner-container {
+-webkit-animation: rotate 2s linear infinite;
+animation: rotate 2s linear infinite;
+z-index: 2;
+}
+.spinner-container.colors .path
+{
+    -webkit-animation: dash 1.5s ease-in-out infinite, color 6s ease infinite;
+    animation: dash 1.5s ease-in-out infinite, color 6s ease infinite;
+}
+.spinner-container .path {
+stroke-dasharray: 1,150; 
+stroke-dashoffset: 0;
+stroke: rgba(27, 154, 89, 0.7);
+stroke-linecap: round;
+-webkit-animation: dash 1.5s ease-in-out infinite;
+animation: dash 1.5s ease-in-out infinite;
+}
+
+#startup .spinner-container .path,
+#initial_startup .spinner-container .path {
+stroke: #acb9bf;
+}
+
+@keyframes rotate {
+100% { transform: rotate(360deg); }
+}
+@-webkit-keyframes rotate{
+100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes dash {
+0% {
+stroke-dasharray: 1,150;  
+stroke-dashoffset: 0;
+}
+50% {
+stroke-dasharray: 90,150; 
+stroke-dashoffset: -35;   
+}
+100% {
+stroke-dasharray: 90,150; 
+stroke-dashoffset: -124;  
+}
+}
+@-webkit-keyframes dash {
+0% {
+stroke-dasharray: 1,150;  
+stroke-dashoffset: 0;
+}
+50% {
+stroke-dasharray: 90,150; 
+stroke-dashoffset: -35;   
+}
+100% {
+stroke-dasharray: 90,150; 
+stroke-dashoffset: -124;  
+}
+}

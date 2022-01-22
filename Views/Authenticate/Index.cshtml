@@ -1,0 +1,29 @@
+﻿
+@{
+    Page.Title = "Login";
+    Layout = "~/Publics/Templates/Login/Login.cshtml";
+}
+<form id="login" method="post" role="form">
+    <div class="login-box-body">
+        <p class="login-box-msg">Identificate para iniciar sesión</p>
+        <div class="form-group has-feedback">
+            <input class="form-control" id="username" required name="username" placeholder="Ingresa tu usuario" type="text" />
+            <span class="fa fa-user form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+            <input class="form-control" required id="password" name="password" placeholder="Ingresa tu contraseña" type="password" />
+            <span class="fa fa-lock form-control-feedback"></span>
+        </div>
+        <div class="row">
+            <!-- /.col -->
+            <div class="col-xs-offset-8 col-xs-4">
+                <button class="btn btn-primary btn-block btn-flat" type="submit">Entrar</button>
+            </div>
+            <!-- /.col -->
+        </div>
+        <a href="#">Olvidé mi contraseña</a><br>
+    </div>
+</form>
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Scripts/login.js?v="+ DateTime.Now.ToString("yyyyMMddHHmmss"))"></script>
+}
